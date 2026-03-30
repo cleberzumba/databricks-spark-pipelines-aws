@@ -1,5 +1,7 @@
 ## Cluster Creation
 
+### General
+
 - Cluster Name: cluster-spark
 - Policy: Unrestricted
 
