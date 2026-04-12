@@ -270,7 +270,7 @@ df.withColumn("status",
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 9. EXAM-STYLE PRACTICE QUESTION
+# MAGIC ## 9.
 # MAGIC
 # MAGIC Replace the `firstName` column with uppercase version named `first_name`,
 # MAGIC and simultaneously rename `department` to `dept` in the DataFrame.
