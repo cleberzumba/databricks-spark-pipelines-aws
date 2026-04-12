@@ -120,10 +120,10 @@ spark.sql("SHOW TABLES").show()
 |---|---|---|
 | Scope | Single workspace | Multi-workspace |
 | Governance | Limited | Fine-grained (row/column level) |
-| Audit logs | ❌ | ✅ |
-| Data lineage | ❌ | ✅ |
-| Volume support | ❌ | ✅ |
-| Recommended | Legacy | ✅ Current standard |
+| Audit logs | No | Yes |
+| Data lineage | No | Yes |
+| Volume support | No | Yes |
+| Recommended | Legacy | Yes Current standard |
 
 ---
 
