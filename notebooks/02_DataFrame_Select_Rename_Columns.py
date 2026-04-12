@@ -2,11 +2,7 @@
 # MAGIC %md
 # MAGIC # Notebook 1: DataFrame Basics - Selecting, Renaming, and Manipulating Columns
 # MAGIC
-# MAGIC ## Exam Topics Covered:
-# MAGIC - Section 3: Developing Apache Spark DataFrame/Dataset API Applications
-# MAGIC   - Manipulate columns, rows, and table structures by adding, dropping, splitting, renaming column names
-# MAGIC
-# MAGIC ## Key Functions You Must Know:
+# MAGIC ## Key Functions:
 # MAGIC - `select()` - Select specific columns
 # MAGIC - `selectExpr()` - Select with SQL expressions
 # MAGIC - `col()` / `column()` - Reference columns
@@ -57,9 +53,8 @@ display(df)
 # MAGIC %md
 # MAGIC ## 1. Selecting Columns
 # MAGIC
-# MAGIC ### Why This Matters for the Exam:
 # MAGIC - Most basic DataFrame operation
-# MAGIC - Multiple syntax variations you need to know
+# MAGIC - Multiple syntax variations
 # MAGIC - Foundation for more complex transformations
 
 # COMMAND ----------
@@ -88,10 +83,8 @@ df.select(
 # MAGIC %md
 # MAGIC ## 2. selectExpr() - SQL Expressions in Select
 # MAGIC
-# MAGIC ### Exam Tip:
 # MAGIC - Allows SQL syntax directly in select
 # MAGIC - Very powerful for calculations and transformations
-# MAGIC - Common in exam questions about data manipulation
 
 # COMMAND ----------
 
@@ -118,7 +111,6 @@ df.select(
 # MAGIC %md
 # MAGIC ## 3. withColumn() - Add or Replace Columns
 # MAGIC
-# MAGIC ### Critical Exam Concept:
 # MAGIC - **REPLACES** the column if it already exists
 # MAGIC - **ADDS** a new column if it doesn't exist
 # MAGIC - Returns a NEW DataFrame (immutability!)
@@ -147,8 +139,6 @@ display(df_transformed)
 # MAGIC %md
 # MAGIC ## 4. withColumnRenamed() - Rename Columns
 # MAGIC
-# MAGIC ### Exam Pattern:
-# MAGIC - Questions often ask you to rename AND transform columns
 # MAGIC - Can chain multiple renames
 # MAGIC - First parameter: existing name, Second parameter: new name
 
@@ -166,7 +156,7 @@ df_all_renamed = (df
 )
 display(df_all_renamed)
 
-# Common exam pattern: Rename and transform together
+# Rename and transform together
 df_complex = (df
     .withColumnRenamed("firstName", "first_name")
     .withColumn("salary_category",
@@ -207,7 +197,6 @@ df.select(
 # MAGIC %md
 # MAGIC ## 6. drop() - Remove Columns
 # MAGIC
-# MAGIC ### Exam Scenarios:
 # MAGIC - Drop single or multiple columns
 # MAGIC - Can use string names or Column objects
 # MAGIC - Returns new DataFrame
@@ -228,8 +217,7 @@ df.drop(col("country")).show()
 # MAGIC %md
 # MAGIC ## 7. cast() - Change Data Types
 # MAGIC
-# MAGIC ### Critical for Exam:
-# MAGIC - Converting between data types is frequently tested
+# MAGIC - Converting between data types is frequently used
 # MAGIC - Two syntax options: `.cast()` method or `cast()` function
 # MAGIC - Common types: StringType, IntegerType, DoubleType, DateType, TimestampType
 
@@ -258,7 +246,6 @@ df_multi_cast.printSchema()
 # MAGIC %md
 # MAGIC ## 8. lit() - Create Literal/Constant Values
 # MAGIC
-# MAGIC ### Common Exam Use Cases:
 # MAGIC - Adding constant columns
 # MAGIC - Concatenating strings with literals
 # MAGIC - Default values in conditional logic
@@ -285,7 +272,6 @@ df.withColumn("status",
 # MAGIC %md
 # MAGIC ## 9. EXAM-STYLE PRACTICE QUESTION
 # MAGIC
-# MAGIC ### Question (Similar to Question 3 from exam guide):
 # MAGIC Replace the `firstName` column with uppercase version named `first_name`,
 # MAGIC and simultaneously rename `department` to `dept` in the DataFrame.
 
@@ -312,16 +298,15 @@ display(result2)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 10. Common Exam Patterns - Combined Operations
+# MAGIC ## 10. Combined Operations
 # MAGIC
-# MAGIC ### What Examiners Love to Test:
 # MAGIC - Chaining multiple operations
 # MAGIC - Renaming + Transforming simultaneously
 # MAGIC - Understanding immutability (each operation returns NEW DataFrame)
 
 # COMMAND ----------
 
-# Complex transformation chain (very common in exam!)
+# Complex transformation chain
 final_df = (df
     .withColumn("fullName", concat(col("firstName"), lit(" "), col("lastName")))
     .withColumn("salary_category",
