@@ -75,50 +75,55 @@ Jobs can be triggered in three ways:
 The example below creates a full **Bronze → Silver → Gold pipeline**, scheduled to run every day at 6am. Each task only starts after the previous one succeeds.
 
 ```python
-import requests
+import requests  # Library for making HTTP requests to the Databricks API
 
 response = requests.post(
-    "https://<databricks-instance>/api/2.1/jobs/create",
-    headers={"Authorization": "Bearer <token>"},
+    "https://<databricks-instance>/api/2.1/jobs/create",  # Databricks REST API endpoint to create a Job
+    headers={"Authorization": "Bearer <token>"},           # Authentication token for the workspace
     json={
-        "name": "Bronze to Gold Pipeline",
+        "name": "Bronze to Gold Pipeline",  # Job name displayed in the Databricks UI
+
         "tasks": [
+
+            # ----------------------------
+            # TASK 1: Bronze Layer
+            # ----------------------------
             {
-                "task_key": "bronze_ingestion",
+                "task_key": "bronze_ingestion",            # Unique identifier for this task
                 "notebook_task": {
-                    "notebook_path": "/notebooks/01_bronze_ingestion"
+                    "notebook_path": "/notebooks/01_bronze_ingestion"  # Notebook to execute
                 },
-                "new_cluster": {
-                    "spark_version": "13.3.x-scala2.12",
-                    "num_workers": 2
-                }
+                "existing_cluster_id": "<cluster-spark-id>"  # Reuses the existing cluster-spark
             },
+
+            # ----------------------------
+            # TASK 2: Silver Layer
+            # ----------------------------
             {
                 "task_key": "silver_cleaning",
-                "depends_on": [{"task_key": "bronze_ingestion"}],
+                "depends_on": [{"task_key": "bronze_ingestion"}],  # Only runs after Task 1 succeeds
                 "notebook_task": {
                     "notebook_path": "/notebooks/02_silver_cleaning"
                 },
-                "new_cluster": {
-                    "spark_version": "13.3.x-scala2.12",
-                    "num_workers": 2
-                }
+                "existing_cluster_id": "<cluster-spark-id>"  # Reuses the existing cluster-spark
             },
+
+            # ----------------------------
+            # TASK 3: Gold Layer
+            # ----------------------------
             {
                 "task_key": "gold_aggregation",
-                "depends_on": [{"task_key": "silver_cleaning"}],
+                "depends_on": [{"task_key": "silver_cleaning"}],  # Only runs after Task 2 succeeds
                 "notebook_task": {
                     "notebook_path": "/notebooks/03_gold_aggregation"
                 },
-                "new_cluster": {
-                    "spark_version": "13.3.x-scala2.12",
-                    "num_workers": 2
-                }
+                "existing_cluster_id": "<cluster-spark-id>"  # Reuses the existing cluster-spark
             }
         ],
+
         "schedule": {
-            "quartz_cron_expression": "0 0 6 * * ?",
-            "timezone_id": "America/Sao_Paulo"
+            "quartz_cron_expression": "0 0 6 * * ?",  # Runs every day at 6:00 AM
+            "timezone_id": "America/Sao_Paulo"         # Timezone for the schedule
         }
     }
 )
