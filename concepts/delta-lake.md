@@ -88,12 +88,12 @@ dt.history().show()
 
 | Feature | Parquet | Delta Lake |
 |---|---|---|
-| ACID Transactions | no | ok |
-| Schema Enforcement | no | ok |
-| Time Travel | no | ok |
-| Upserts (MERGE) | no | ok |
-| Streaming Support | Limited | ok |
-| Transaction Log | no | ok |
+| ACID Transactions | No | Yes |
+| Schema Enforcement | No | Yes |
+| Time Travel | No | Yes |
+| Upserts (MERGE) | No | Yes |
+| Streaming Support | Limited | Yes |
+| Transaction Log | No | Yes |
 
 ---
 
