@@ -16,7 +16,7 @@ In simple terms: a Job turns your notebook into a **production pipeline**.
 | Use case | Development & exploration | Production pipelines |
 | Cluster | All-purpose (always on) | Job cluster (starts and stops automatically) |
 | Cost | Higher | Lower |
-| Scheduling | ❌ | ✅ (cron, triggered, continuous) |
+| Scheduling | No | Yes (cron, triggered, continuous) |
 | Monitoring | Limited | Full logs, alerts, retries |
 
 ---
