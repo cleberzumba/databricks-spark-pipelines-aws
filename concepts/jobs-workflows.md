@@ -97,6 +97,13 @@ response = requests.post(
                 "notebook_task": {
                     "notebook_path": "/notebooks/02_silver_cleaning"
                 }
+            },
+            {
+                "task_key": "gold_aggregation",
+                "depends_on": [{"task_key": "silver_cleaning"}],
+                "notebook_task": {
+                    "notebook_path": "/notebooks/03_gold_aggregation"
+                }
             }
         ],
         "schedule": {
