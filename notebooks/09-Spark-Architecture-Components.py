@@ -218,10 +218,10 @@ result.explain()
 # MAGIC ### CRITICAL: Know the differences!
 # MAGIC
 # MAGIC | Mode | Driver Location | Use Case | Executors |
-# MAGIC |------|----------------|----------|-----------|
-# MAGIC | **Local** | Same JVM | Development, Testing | **No remote executors!** Uses threads |
-# MAGIC | **Client** | Submission machine (your laptop) | Interactive, Debugging | Remote worker nodes |
-# MAGIC | **Cluster** | Inside cluster (worker node) | Production | Remote worker nodes |
+# MAGIC |-------------|----------------------------------|------------------------|---------------------------------------|
+# MAGIC | **Local**   | Same JVM                         | Development, Testing   | **No remote executors!** Uses threads |
+# MAGIC | **Client**  | Submission machine (your laptop) | Interactive, Debugging | Remote worker nodes                   |
+# MAGIC | **Cluster** | Inside cluster (worker node)     | Production             | Remote worker nodes                   |
 # MAGIC
 # MAGIC **"Which Spark deployment mode requires all executors to run on a single worker node?"**
 # MAGIC
@@ -499,14 +499,14 @@ wide_df.explain()
 # MAGIC
 # MAGIC ### Core Modules You Must Know:
 # MAGIC
-# MAGIC | Module | Purpose | Key APIs |
-# MAGIC |--------|---------|----------|
-# MAGIC | **Spark Core** | Foundation, RDD API | RDD, Broadcast, Accumulators |
-# MAGIC | **Spark SQL** | Structured data | DataFrame, Dataset, SQL |
-# MAGIC | **Structured Streaming** | Real-time processing | readStream, writeStream |
-# MAGIC | **MLlib** | Machine Learning | ML pipelines, algorithms |
-# MAGIC | **GraphX** | Graph processing | Vertices, Edges |
-# MAGIC | **Pandas API on Spark** | Pandas compatibility | pyspark.pandas |
+# MAGIC | Module                   | Purpose              | Key APIs                           |
+# MAGIC |--------------------------|----------------------|------------------------------------|
+# MAGIC | **Spark Core**           | Foundation, RDD API  | RDD, Broadcast, Accumulators       |
+# MAGIC | **Spark SQL**            | Structured data      | DataFrame, Dataset, SQL            |
+# MAGIC | **Structured Streaming** | Real-time processing | readStream, writeStream            |
+# MAGIC | **Spark ML (MLlib)**     | Machine Learning     | Pipelines, Transformers, Estimators|
+# MAGIC | **GraphX**               | Graph processing     | Vertices, Edges                    |
+# MAGIC | **Pandas API on Spark**  | Pandas compatibility | pyspark.pandas                     |
 # MAGIC
 
 # COMMAND ----------
