@@ -432,15 +432,15 @@ result.show()
 # MAGIC
 # MAGIC ### Join Types - Must Know All:
 # MAGIC
-# MAGIC | Join Type | Returns | Use Case |
-# MAGIC |-----------|---------|----------|
-# MAGIC | **inner** | Matches from both | Default, most common |
-# MAGIC | **left** | All left + matches from right | Keep all from main table |
-# MAGIC | **right** | All right + matches from left | Reverse of left |
-# MAGIC | **outer** | All from both | Everything |
-# MAGIC | **left_semi** | Left where match exists (left columns only) | Filtering |
-# MAGIC | **left_anti** | Left where NO match exists | Find non-matches |
-# MAGIC | **cross** | Cartesian product (all combinations) | Rare, dangerous! |
+# MAGIC | Join Type     | Returns                                     | Use Case                 |
+# MAGIC |---------------|---------------------------------------------|--------------------------|
+# MAGIC | **inner**     | Matches from both                           | Default, most common     |
+# MAGIC | **left**      | All left + matches from right               | Keep all from main table |
+# MAGIC | **right**     | All right + matches from left               | Reverse of left          |
+# MAGIC | **outer**     | All from both                               | Everything               |
+# MAGIC | **left_semi** | Left where match exists (left columns only) | Filtering                |
+# MAGIC | **left_anti** | Left where NO match exists                  | Find non-matches         |
+# MAGIC | **cross**     | Cartesian product (all combinations)        | Rare, dangerous!         |
 # MAGIC
 # MAGIC **Why use broadcast join:**
 # MAGIC - Avoids expensive shuffle operations
