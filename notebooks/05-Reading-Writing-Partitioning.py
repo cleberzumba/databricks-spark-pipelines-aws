@@ -53,12 +53,12 @@ base_path = "/Volumes/workspace/default/spark_cert"
 # MAGIC %md
 # MAGIC ## 1. Write Modes
 # MAGIC
-# MAGIC | Mode | Behavior | Use Case |
-# MAGIC |------|----------|----------|
-# MAGIC | **append** | Add to existing data | Incremental loads |
-# MAGIC | **overwrite** | **Replace all existing data** | Full refresh |
+# MAGIC | Mode                          | Behavior                      | Use Case          |
+# MAGIC |-------------------------------|-------------------------------|-------------------|
+# MAGIC | **append**                    | Add to existing data          | Incremental loads |
+# MAGIC | **overwrite**                 | **Replace all existing data** | Full refresh      |
 # MAGIC | **error** / **errorifexists** | Fail if data exists (DEFAULT) | Prevent accidents |
-# MAGIC | **ignore** | Do nothing if data exists | Skip if exists |
+# MAGIC | **ignore**                    | Do nothing if data exists     | Skip if exists    |
 
 # COMMAND ----------
 
@@ -410,12 +410,12 @@ df.write.mode("overwrite").format("delta").saveAsTable("employees_delta")
 # MAGIC ```
 # MAGIC
 # MAGIC ### Write Modes:
-# MAGIC | Mode | What It Does |
-# MAGIC |------|--------------|
-# MAGIC | **append** | Add to existing data |
-# MAGIC | **overwrite** | Replace all data |
-# MAGIC | **error** | Fail if exists (DEFAULT) |
-# MAGIC | **ignore** | Skip if exists |
+# MAGIC | Mode          | What It Does             |
+# MAGIC |---------------|--------------------------|
+# MAGIC | **append**    | Add to existing data     |
+# MAGIC | **overwrite** | Replace all data         |
+# MAGIC | **error**     | Fail if exists (DEFAULT) |
+# MAGIC | **ignore**    | Skip if exists           |
 # MAGIC
 # MAGIC ### File Formats:
 # MAGIC - **Parquet** - Columnar, compressed, most common in production
