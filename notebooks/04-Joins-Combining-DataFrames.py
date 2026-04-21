@@ -245,7 +245,7 @@ result2.show()
 # Regular join (may shuffle both sides)
 regular_join = employees.join(departments, "dept_id")
 
-# Broadcast join (broadcasts send small departments to all executors)
+# Broadcast join (broadcasts send small departments to all executors, avoids expensive shuffle operation)
 broadcast_join = employees.join(broadcast(departments), "dept_id")
 
 # Both produce same result, but broadcast join is faster for small departments
