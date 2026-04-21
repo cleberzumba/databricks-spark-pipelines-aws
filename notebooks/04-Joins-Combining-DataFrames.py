@@ -412,7 +412,7 @@ customers = spark.createDataFrame([
     (104, "Alice", "USA"),  # No orders
 ], ["customer_id", "name", "country"])
 
-# Question: Get all orders with customer details, using broadcast for small customers table
+# Get all orders with customer details, using broadcast for small customers table
 result = (orders
     .join(broadcast(customers), "customer_id", "inner")
     .select(
@@ -430,7 +430,7 @@ result.show()
 
 # MAGIC %md
 # MAGIC
-# MAGIC ### Join Types - Must Know All:
+# MAGIC ### Join Types:
 # MAGIC
 # MAGIC | Join Type     | Returns                                     | Use Case                 |
 # MAGIC |---------------|---------------------------------------------|--------------------------|
@@ -450,3 +450,8 @@ result.show()
 # MAGIC **When to use:**
 # MAGIC - One table is small (< 10MB typically)
 # MAGIC - Significant size difference between tables
+# MAGIC
+# MAGIC **Use broadcast variables only when:**
+# MAGIC - You need custom logic (UDF, map, etc.)
+# MAGIC - The data is small (KB / a few MB)
+# MAGIC - It can't be resolved with a join
