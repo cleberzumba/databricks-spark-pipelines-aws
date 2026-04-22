@@ -1,4 +1,4 @@
-# Notebook 12: Realistic Interview Scenario - Massive Scale Spark/PySpark Optimization (600TB)
+# Notebook 12: Scenario - Massive Scale Spark/PySpark Optimization (600TB)
 
 - Realistic large-scale Spark optimization scenario
 - Join strategy analysis
@@ -139,3 +139,96 @@ result = df.groupBy(
 )
 
 result.write.mode("overwrite").parquet("/final/output/")
+
+
+
+## Optimized Version
+
+from pyspark.sql.functions import (
+    col,
+    sum,
+    count,
+    countDistinct,
+    when,
+    broadcast
+)
+
+# 1. Select only required columns (column pruning)
+contracts_sel = contracts.select(
+    "contract_id",
+    "customer_id",
+    "institution_id",
+    "product_id",
+    "status",
+    "amount",
+    "region"
+)
+
+customers_sel = customers.select(
+    "customer_id",
+    "customer_type",
+    "state"
+)
+
+institutions_sel = institutions.select(
+    "institution_id",
+    "institution_name",
+    "group_name"
+)
+
+products_sel = products.select(
+    "product_id",
+    "category"
+)
+
+transactions_sel = transactions.select(
+    "contract_id",
+    "transaction_id",
+    "transaction_amount"
+)
+
+# 2. Early filter (reduces dataset before joins)
+contracts_filt = contracts_sel.filter(col("status") == "ACTIVE")
+
+# 3. Pre-aggregation (CRITICAL optimization)
+transactions_agg = transactions_sel.groupBy("contract_id").agg(
+    sum("transaction_amount").alias("total_transaction_amount"),
+    count("transaction_id").alias("transaction_count")
+)
+
+# 4. Optimized joins
+df = (
+    contracts_filt
+    .join(customers_sel, "customer_id", "left")  # no broadcast (large table)
+    .join(broadcast(institutions_sel), "institution_id", "left")  # small dimension
+    .join(broadcast(products_sel), "product_id", "left")  # small dimension
+    .join(transactions_agg, "contract_id", "left")  # already reduced
+)
+
+# 5. Derive after reduction
+df = df.withColumn(
+    "ticket_class",
+    when(col("total_transaction_amount") > 100000, "HIGH")
+    .when(col("total_transaction_amount") > 50000, "MEDIUM")
+    .otherwise("LOW")
+)
+
+# 6. Final aggregation
+result = df.groupBy(
+    "group_name",
+    "institution_name",
+    "category",
+    "customer_type",
+    "state",
+    "ticket_class"
+).agg(
+    sum("total_transaction_amount").alias("total_amount"),
+    sum("transaction_count").alias("transaction_count"),
+    countDistinct("contract_id").alias("unique_contracts")
+)
+
+# 7. Controlled write (avoid small files / improve parallelism)
+result.repartition("group_name") \
+    .write \
+    .mode("overwrite") \
+    .parquet("/final/output/")
