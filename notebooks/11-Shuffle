@@ -1,0 +1,203 @@
+
+
+## ✔️ Shuffle (nível profundo)
+
+* ✔️ Ocorre em operações wide (join, groupBy, distinct)
+
+### 🔹 Exemplo (gera shuffle)
+
+# MAGIC - df.groupBy("dept_id").count().explain("formatted")
+```
+
+👉 Você verá:
+
+```
+Exchange
+```
+
+➡️ Isso significa **shuffle acontecendo**
+
+---
+
+## ✔️ Execution Plan (`explain()`)
+
+### 🔹 Exemplo com join
+
+```python
+from pyspark.sql.functions import broadcast
+
+df = employees.join(broadcast(departments), "dept_id")
+df.explain("formatted")
+```
+
+### ✔️ O que observar:
+
+* `BroadcastHashJoin` → broadcast aplicado
+* `Exchange` → shuffle
+* `Scan` → leitura de dados
+
+---
+
+## ✔️ Estratégias de Join
+
+### 🔹 Broadcast Hash Join
+
+```python
+employees.join(broadcast(departments), "dept_id").explain()
+```
+
+👉 Esperado:
+
+```
+BroadcastHashJoin
+```
+
+---
+
+### 🔹 Sort Merge Join (padrão)
+
+```python
+employees.join(departments, "dept_id").explain()
+```
+
+👉 Esperado:
+
+```
+SortMergeJoin
+Exchange
+```
+
+---
+
+## ✔️ Particionamento
+
+### 🔹 Repartition (gera shuffle)
+
+```python
+df = employees.repartition(10)
+df.rdd.getNumPartitions()
+```
+
+---
+
+### 🔹 Coalesce (não gera shuffle)
+
+```python
+df = employees.coalesce(2)
+df.rdd.getNumPartitions()
+```
+
+---
+
+## ✔️ Data Skew
+
+### 🔹 Simulando skew
+
+```python
+data = [(1, "A")] * 1000000 + [(2, "B")] * 10
+df = spark.createDataFrame(data, ["key", "value"])
+
+df.groupBy("key").count().show()
+```
+
+👉 chave `1` concentra quase tudo
+
+---
+
+### 🔹 Solução simples (salting)
+
+```python
+from pyspark.sql.functions import rand, concat
+
+df_salted = df.withColumn("salt", (rand() * 10).cast("int"))
+```
+
+---
+
+## ✔️ Catalyst Optimizer
+
+### 🔹 Exemplo (column pruning)
+
+```python
+employees.select("emp_id").explain("formatted")
+```
+
+👉 Spark lê **apenas a coluna necessária**
+
+---
+
+### 🔹 Predicate Pushdown
+
+```python
+employees.filter("dept_id = 1").explain("formatted")
+```
+
+👉 filtro aplicado na leitura (mais eficiente)
+
+---
+
+## ✔️ Boas práticas de Join
+
+### 🔹 ERRADO (pesado)
+
+```python
+employees.join(departments, "dept_id")
+```
+
+---
+
+### 🔹 CERTO (otimizado)
+
+```python
+employees.select("emp_id", "dept_id") \
+    .join(broadcast(departments.select("dept_id", "dept_name")), "dept_id")
+```
+
+---
+
+## ✔️ Detecção de problemas
+
+### 🔹 Identificar shuffle
+
+```python
+df.explain("formatted")
+```
+
+👉 procure:
+
+```
+Exchange
+```
+
+---
+
+### 🔹 Identificar broadcast
+
+```python
+df.explain()
+```
+
+👉 procure:
+
+```
+BroadcastHashJoin
+```
+
+---
+
+# 🔥 RESUMO FINAL
+
+Você agora cobre:
+
+* ✔️ Broadcast vs Shuffle
+* ✔️ Execution Plan (`explain`)
+* ✔️ Join Strategies
+* ✔️ Particionamento
+* ✔️ Data Skew
+* ✔️ Catalyst
+
+---
+
+Se quiser subir mais um nível:
+
+👉 posso te dar **um problema real de 600TB (igual seu cenário)** e te fazer otimizar como em entrevista técnica.
